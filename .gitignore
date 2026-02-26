@@ -1,0 +1,4 @@
+.venv/
+agent/__pycache__
+agent/.adk
+agent/.env
