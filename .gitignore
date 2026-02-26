@@ -2,3 +2,5 @@
 agent/__pycache__
 agent/.adk
 agent/.env
+agent/.gitignore
+.adk/
