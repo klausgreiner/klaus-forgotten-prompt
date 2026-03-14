@@ -1,9 +1,11 @@
-# klaus-forgotten-prompt
+# Workshop Forgotten Prompt
 
-https://adventure.wietsevenema.eu/leaderboards/9ffbf65d-c398-458c-8f86-3c5844fd563c
-https://adventure.wietsevenema.eu/
-https://wietsevenema.eu/blog/2025/adding-a-tool-to-your-adk-agent/
-https://console.cloud.google.com/
+![Score](
+https://private-user-images.githubusercontent.com/17580502/563364090-29521e41-a625-4340-956d-47bd7883cdef.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzM0NDg2MTUsIm5iZiI6MTc3MzQ0ODMxNSwicGF0aCI6Ii8xNzU4MDUwMi81NjMzNjQwOTAtMjk1MjFlNDEtYTYyNS00MzQwLTk1NmQtNDdiZDc4ODNjZGVmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAzMTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMzE0VDAwMzE1NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTZmZGVlMWJiOWI3YWUxYmEwM2U0ZTkyNGMzNjdkNTM5MWY1YzI3YTU0ZTY2YWI4M2FmOTM4Yzc5NDkxOTc3Y2YmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.QXqPbOCZHXge3fmgTKdNdQOBBYcAcdVrrIcgHbNSBI0)
+![Score per Level](
+https://private-user-images.githubusercontent.com/17580502/563364131-8e70c66e-5aa7-4e38-9863-c226a74cd5f7.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzM0NDg2MTUsIm5iZiI6MTc3MzQ0ODMxNSwicGF0aCI6Ii8xNzU4MDUwMi81NjMzNjQxMzEtOGU3MGM2NmUtNWFhNy00ZTM4LTk4NjMtYzIyNmE3NGNkNWY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAzMTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMzE0VDAwMzE1NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTgxZTk2NWRkNDJiYjY3N2UzODBmMTIwMmVjYzQ1MzlmMDZjMDRjNTU4ZTdmNDlkM2Q0NzdhZmJiOWM5NjA2ODMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.3R2Uq7kI045I5759eqG6nJnZf7Ea4p8sv1KT04dNxGQ)
+
+
 
 ## Running the agent
 
@@ -53,3 +55,8 @@ gcloud auth login
 ```bash
 uv run adk web
 ```
+
+## Useful Links
+https://adventure.wietsevenema.eu/
+https://wietsevenema.eu/blog/2025/adding-a-tool-to-your-adk-agent/
+https://console.cloud.google.com/
