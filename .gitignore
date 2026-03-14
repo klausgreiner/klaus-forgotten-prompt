@@ -4,3 +4,9 @@ agent/.adk
 agent/.env
 agent/.gitignore
 .adk/
+.DS_Store
+uv.lock
+agent/runs
+__pycache__
+uv.lock
+uv.lock

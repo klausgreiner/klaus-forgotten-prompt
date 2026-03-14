@@ -6,6 +6,17 @@ from google.adk.agents.loop_agent import LoopAgent
 from google.adk.tools.openapi_tool import OpenAPIToolset
 from google.adk.tools.openapi_tool.auth.auth_helpers import token_to_scheme_credential
 
+from .memory import get_level_tips
+
+
+def read_tips(level: int = 0) -> str:
+    """Returns optimization tips for the given level. Call read_tips(0) for level 0, read_tips(1) for level 1, read_tips(2) for level 2. Tips are read from .agent_tips/level0_tips.txt, level1_tips.txt, level2_tips.txt."""
+    if level not in (0, 1, 2):
+        return f"Level must be 0, 1, or 2; got {level}."
+    out = get_level_tips(level)
+    return out or f"No tips file for level {level} yet."
+
+
 openapi_spec = requests.get("https://adventure.wietsevenema.eu/openapi.json").text
 
 
@@ -31,38 +42,6 @@ def fetch_url(url: str) -> str:
         return response.text
 
 
-# player_agent = Agent(
-#     model="gemini-2.5-flash",
-#     name="player_agent",
-#     description="An expert adventure game player.",
-#     instruction=(
-#         "You are player use the current of sets of tools to look, move, take, use, and examine,fetch_url",
-#         "Explore thoroughly and interact with everything.A successful adventurer is both quick and curious. Good luck!",
-#         "Available commands: look (l, ls, view, see) - Look around in the room; inventory (i, bag, items) - List your inventory; examine <thing> (x, inspect, check) - Describe an item or exit; move <exit> (m, go, cd, walk, mv) - Move through an exit; take <item> (t, get, grab, pick) - Take an item; use <item> [on <target>] (u, apply) - Use an item, or an item on a target; drop <item> (d, discard, release) - Drop an item from your inventory; quit (q, exit, :q!, ESC, Ctrl+C) - Quit the level; help (h, ?, man, info) - Show a list of commands.",
-#     ),
-#     tools=[adventure_game_toolset, fetch_url],
-# )
-
-
-# critic_agent = Agent(
-#     model="gemini-2.5-flash",
-#     name="critic_agent",
-#     description="A strategic critic who reviews actions taken by the player agent and guides them to improve their results.",
-#     instruction=(
-#         "You are the CRITIC agent, observing every action taken by the player_agent in the adventure game 'The Garden of the Forgotten Prompt.'\n\n"
-#         "Your job is to:\n"
-#         "- Analyze and critique each move the player_agent makes, focusing on efficiency, creativity, and how well it follows leaderboard optimization strategy.\n"
-#         "- Point out missed opportunities for micro-awards, exploration, or faster progression, and suggest alternative actions if needed.\n"
-#         "- Help the player maintain an optimal game strategy by detecting patterns of inefficiency, overlooked clues, or repeated mistakes.\n"
-#         "- Ensure the player_agent always executes one strategic action per turn and avoids unnecessary actions.\n"
-#         "You NEVER take direct action in the game, but always reflect on the PLAYER's most recent actions, outcomes, and decisions, giving clear, helpful feedback and guidance for improvement.\n"
-#         "If the player_agent reaches a termination state or makes a perfect optimal move, praise or acknowledge this appropriately.\n\n"
-#         "Format your response as:\n"
-#         '"CRITIQUE": Your strategic feedback and analysis (1-2 paragraphs max).\n'
-#         '"GUIDANCE": Concrete advice or an improved next step for the player_agent.'
-#     ),
-#     tools=[],
-# )
 def run_code(code: str) -> str:
     """
     Executes the provided Python code string and returns its output or error message.
@@ -78,6 +57,7 @@ def run_code(code: str) -> str:
     sys.stderr = io.StringIO()
     try:
         import hashlib
+
         global_vars = {"hashlib": hashlib}
         local_vars = {}
         exec(code, global_vars, local_vars)
@@ -97,20 +77,32 @@ def run_code(code: str) -> str:
         sys.stderr = old_stderr
 
 
-player_agent = Agent(
+shared_tools = [adventure_game_toolset, fetch_url, run_code, read_tips]
+
+instruction_agent = Agent(
     model="gemini-2.5-flash",
-    name="player_agent",
-    description="An expert adventure game player.",
+    name="instruction_agent",
+    description="Follows the given instructions and tips strictly. Use when the user wants to complete the level as fast as possible by following a plan.",
+    instruction=(
+        "You strictly follow the instructions. Call read_tips(0,1,2) and do exactly what the tips say.\n"
+        "Finish as fast as possible with bonus points. Do not wander or try unrelated actions. Use look, move, take, use, examine, fetch_url as needed to execute the plan.\n"
+    ),
+    tools=shared_tools,
+)
+
+exploratory_agent = Agent(
+    model="gemini-2.5-flash",
+    name="exploratory_agent",
+    description="Exploratory player that examines and tries everything. Use when the user wants to discover the environment, try things, or find secrets.",
     instruction=(
         "You are player use the current of sets of tools to look, move, take, use, and examine,fetch_url\n"
-        "Always use look and try to go as fast as you can listening to the instructions. A successful adventurer is both quick and curious. Good luck!\n"
-        "Available commands: look (l, ls, view, see) - Look around in the room; inventory (i, bag, items) - List your inventory; examine <thing> (x, inspect, check) - Describe an item or exit; move <exit> (m, go, cd, walk, mv) - Move through an exit; take <item> (t, get, grab, pick) - Take an item; use <item> [on <target>] (u, apply) - Use an item, or an item on a target; drop <item> (d, discard, release) - Drop an item from your inventory; quit (q, exit, :q!, ESC, Ctrl+C) - Quit the level; help (h, ?, man, info) - Show a list of commands."
+        "A successful adventurer is both quick and curious. use the instructions but don't forget to explore a little\n"
     ),
-    tools=[adventure_game_toolset, fetch_url, run_code],
+    tools=shared_tools,
 )
 
 root_agent = LoopAgent(
     name="root_agent",
-    sub_agents=[player_agent],
-    max_iterations=100,
+    sub_agents=[exploratory_agent],  # , exploratory_agent],
+    max_iterations=50,
 )
